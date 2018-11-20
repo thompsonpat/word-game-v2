@@ -166,7 +166,14 @@ public class WordGame : MonoBehaviour
                 // The % here makes multiple columns line up
                 pos.y -= (i % numRows) * letterSize;
 
+				// Move the lett immediately to a position above the screen
+				lett.posImmediate = pos + Vector3.up * (20 + i % numRows);
+
+				// Then set the pos for it to interpolate to
                 lett.pos = pos;
+
+				// Increment lett.startTime to move wyrds at different times
+				lett.timeStart = Time.time + i * 0.05f;
 
                 go.transform.localScale = Vector3.one * letterSize;
 
@@ -202,7 +209,12 @@ public class WordGame : MonoBehaviour
             // Set the initial position of the big Letters below screen
             pos = new Vector3(0, -100, 0);
 
+			lett.posImmediate = pos;
             lett.pos = pos;
+
+			// Increment lett.timeStart to have big letters come in last
+			lett.timeStart = Time.time + currLevel.subWords.Count * 0.05f;
+			lett.easingCuve = Easing.Sin + "-0.18";	// Bouncy easing
 
             col = bigColorDim;
             lett.color = col;
