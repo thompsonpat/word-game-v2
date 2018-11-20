@@ -30,13 +30,18 @@ public class WordList : MonoBehaviour
     }
 
     // Use this for initialization
-    void Start()
+    void Init()
     {
         lines = wordListText.text.Split('\n');
         totalLines = lines.Length;
 
         StartCoroutine(ParseLines());
     }
+
+	static public void INIT()
+	{
+		S.Init();
+	}
 
     public IEnumerator ParseLines()
     {
@@ -48,7 +53,7 @@ public class WordList : MonoBehaviour
         for (currLine = 0; currLine < totalLines; currLine++)
         {
             word = lines[currLine];
-			
+
             if (word.Length == wordLengthMax)
             {
                 longWords.Add(word);
@@ -70,6 +75,9 @@ public class WordList : MonoBehaviour
 
         longWordCount = longWords.Count;
         wordCount = words.Count;
+
+		// Send a message to this gameObject to let it know the parse is done
+        gameObject.SendMessage("WordListParseComplete");
     }
 
     static public List<string> GET_WORDS()
